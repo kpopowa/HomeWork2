@@ -1,33 +1,28 @@
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
-
-public class Inputs {
+public class ContextMenu {
 
     @Test
-    public void inputs(){
+    public void ContextMenu(){
         System.setProperty("webdriver.chrome.driver","src/test/resources/chromedriver");
         WebDriver driver = new ChromeDriver();
         driver.get("http://the-internet.herokuapp.com/");
 
-        WebElement clickInputsButton = driver.findElement(By.xpath("//a[@href='/inputs']"));
-        clickInputsButton.click();
+        WebElement clickContextMenuButton = driver.findElement(By.xpath("//a[@href='/context_menu']"));
+        clickContextMenuButton.click();
 
-        WebElement inputUpDown = driver.findElement(By.xpath("//input[@type='number']"));
-        inputUpDown.sendKeys(Keys.UP);
+        Actions action = new Actions(driver);
+        WebElement link = driver.findElement(By.id("hot-spot"));
+        action.contextClick(link).perform();
 
-        Assert.assertEquals(inputUpDown.getAttribute("value"),"1");
+        Alert alert = driver.switchTo().alert();
+        alert.getText();
+        Assert.assertEquals(alert.getText(), "You selected a context menu");
+        alert.accept();
 
-        inputUpDown.sendKeys(Keys.DOWN);
-        inputUpDown.sendKeys(Keys.DOWN);
-
-        Assert.assertEquals(inputUpDown.getAttribute("value"),"-1");
-
-        driver.quit();
     }
 }

@@ -3,6 +3,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -17,21 +19,17 @@ public class FileUpload {
         WebElement clickFileUploadButton = driver.findElement(By.xpath("//a[@href='/upload']"));
         clickFileUploadButton.click();
 
-        WebElement clickUploadButton = driver.findElement(By.xpath("//input[@class='button']"));
+        WebElement clickChooseFileButton = driver.findElement(By.xpath("//input[@id='file-upload']"));
+        clickChooseFileButton.sendKeys("/Users/kristinapopova/Downloads/chromedriver");
+
+        WebElement clickUploadButton = driver.findElement(By.id("file-submit"));
         clickUploadButton.click();
 
+        (new WebDriverWait(driver, 20))
+                .until(ExpectedConditions.elementToBeClickable(By.id("uploaded-files")));
 
-
-
-//        WebElement inputUpDown = driver.findElement(By.xpath("//input[@type='number']"));
-//        inputUpDown.sendKeys(Keys.UP);
-//
-//        Assert.assertEquals(inputUpDown.getAttribute("value"),"1");
-//
-//        inputUpDown.sendKeys(Keys.DOWN);
-//        inputUpDown.sendKeys(Keys.DOWN);
-//
-//        Assert.assertEquals(inputUpDown.getAttribute("value"),"-1");
+        WebElement uploadedFileText = driver.findElement(By.id("uploaded-files"));
+        Assert.assertEquals(uploadedFileText.getText(), "chromedriver");
 
         driver.quit();
     }

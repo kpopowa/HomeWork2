@@ -1,32 +1,37 @@
-import org.openqa.selenium.Keys;
-import org.testng.annotations.Test;
-
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
-public class Inputs {
+public class Frames {
 
     @Test
-    public void inputs(){
+    public void frames(){
         System.setProperty("webdriver.chrome.driver","src/test/resources/chromedriver");
         WebDriver driver = new ChromeDriver();
         driver.get("http://the-internet.herokuapp.com/");
 
-        WebElement clickInputsButton = driver.findElement(By.xpath("//a[@href='/inputs']"));
-        clickInputsButton.click();
+        WebElement clickFramesButton = driver.findElement(By.xpath("//a[@href='/frames']"));
+        clickFramesButton.click();
 
-        WebElement inputUpDown = driver.findElement(By.xpath("//input[@type='number']"));
-        inputUpDown.sendKeys(Keys.UP);
+        WebElement clickIframessButton = driver.findElement(By.xpath("//a[@href='/iframe']"));
+        clickIframessButton.click();
 
-        Assert.assertEquals(inputUpDown.getAttribute("value"),"1");
+        (new WebDriverWait(driver, 20))
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//iframe[@id='mce_0_ifr']")));
 
-        inputUpDown.sendKeys(Keys.DOWN);
-        inputUpDown.sendKeys(Keys.DOWN);
+        WebElement iFrame= driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']"));
+        driver.switchTo().frame(iFrame);
 
-        Assert.assertEquals(inputUpDown.getAttribute("value"),"-1");
+        WebElement iFrameText = driver.findElement(By.xpath("//p"));
+
+
+        Assert.assertEquals(iFrameText.getText(), "Your content goes here.");
 
         driver.quit();
     }
