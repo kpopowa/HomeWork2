@@ -19,16 +19,11 @@ public class Typos {
         WebElement clickAddRemoveElements = driver.findElement(By.xpath("//a[@href='/typos']"));
         clickAddRemoveElements.click();
 
-
         String expectedMessage = "Sometimes you'll see a typo, other times you won't.";
         String message = driver.findElements(By.xpath("//p")).get(1).getText();
         Assert.assertTrue(message.contains(expectedMessage));
 
         driver.quit();
-//
 
     }
-
-
-
 }
